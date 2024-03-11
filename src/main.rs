@@ -64,9 +64,11 @@ async fn main(_spawner: Spawner) -> ! {
         saadc_config,
         [saadc::ChannelConfig::single_ended(board.p2)],
     );
+
     let knob = Knob::new(saadc).await;
     let mut ui = Ui::new(knob, board.btn_a, board.btn_b);
 
+    //Run RGB control loop and UI concurrently
     join::join(rgb.run(), ui.run()).await;
 
     panic!("fell off end of main loop");

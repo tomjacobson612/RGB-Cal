@@ -10,6 +10,7 @@ impl Knob {
         Self(adc)
     }
 
+    //Measure the position of the knob
     pub async fn measure(&mut self) -> u32 {
         let mut buf = [0];
         self.0.sample(&mut buf).await;
