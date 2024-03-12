@@ -49,6 +49,12 @@ impl Ui {
         //Measure knob level for Blue channel (levels = ["red", "green", "blue"])
         self.state.levels[2] = self.knob.measure().await;
 
+        //Measure knob level for Green channel (levels = ["red", "green", "blue"])
+        self.state.levels[1] = self.knob.measure().await;
+
+        //Measure knob level for Red channel (levels = ["red", "green", "blue"])
+        self.state.levels[0] = self.knob.measure().await;
+
         //Set the rgb levels based on ui state
         set_rgb_levels(|rgb| {
             *rgb = self.state.levels;
@@ -61,11 +67,46 @@ impl Ui {
             //Measure knob level
             let level = self.knob.measure().await;
 
+            if self._button_a.is_high() && self._button_b.is_high(){
+                if self.state.frame_rate != (level as u64 * 10)+10{
+                    self.state.frame_rate = (level as u64 * 10)+10;
+                    self.state.show();
+                }
+            }
+                
             //If blue channel level has changed
-            if level != self.state.levels[2] {
+            if self._button_a.is_low() && level != self.state.levels[2] {
 
                 //Update level
                 self.state.levels[2] = level;
+
+                self.state.show();
+
+                //Update rgb levels in rgb struct
+                set_rgb_levels(|rgb| {
+                    *rgb = self.state.levels;
+                })
+                .await;
+            }
+
+            if self._button_b.is_low() && level != self.state.levels[1] {
+
+                //Update level
+                self.state.levels[1] = level;
+
+                self.state.show();
+
+                //Update rgb levels in rgb struct
+                set_rgb_levels(|rgb| {
+                    *rgb = self.state.levels;
+                })
+                .await;
+            }
+
+            if (self._button_a.is_low() && self._button_b.is_low()) && level != self.state.levels[0] {
+
+                //Update level
+                self.state.levels[0] = level;
 
                 self.state.show();
 
