@@ -1,64 +1,18 @@
-# rgbcal: RGB LED calibration tool
+# RGB Cal
 
-Bart Massey 2024
+## Tom Jacobson
 
-This tool is designed to find out a decent frame rate and
-maximum RGB component values to produce a white-looking RGB
-of reasonable brightness.
+### Measurements
 
-See below for UI.
+### Overview
 
-**XXX This tool is _mostly_ finished! Please wire your
-hardware up (see below), finish it, comment it, and use it
-to find good values. Then document those values in this
-README.**
+This tool is designed to find out a decent frame rate and maximum RGB component values to produce a white-looking RGB of reasonable brightness. Code skeleton provided by Bart Massey 2024. Code features extended by Tom Jacobson.
+### Writeup
+This was a fun assignment as it involved working with a couple of different pieces of external hardware. The wiring itself was not too difficult once I got my bearings, and the tips provided in the assignment spec helped answer most all of my wiring questions. The only trouble I ran into was the nob readings being backwards but that was easily fixed by switching two wires that I had accidentally swapped positions of. 
 
-## Build and Run
+Overall the coding portion of the assignment went very smoothly. After spending some time with the code base it became fairly clear how things worked, and as they already were programmed to work with the blue LED it was not too complicated to add the logic for the red and green. The framerate was somewhat tricky but not too bad either after a little bit of trial and error. This was a good final assignment as the brunt of the most tedious work was already done for us and allowed us to focus more on interacting with the hardware. It continues to amaze me how syntatically heavy such a simple program can be. Obviously there were some extra steps to make the code extensible and for it to be alterable without significant reworks. Even so, its amazing how something so simple can take multiple files and a couple of hundred lines of code.
 
-Run with `cargo embed --release`. You'll need `cargo embed`, as
-`cargo run` / `probe-rs run` does not reliably maintain a
-connection for printing. See
-https://github.com/probe-rs/probe-rs/issues/1235 for the
-details.
+#### Sources
 
-## Wiring
+- https://github.com/pdx-cs-rust-embedded/hw-rgbcal-skeleton
 
-Connect the RGB LED to the MB2 as follows:
-
-- Red to P9 (GPIO1)
-- Green to P8 (GPIO2)
-- Blue to P16 (GPIO3)
-- Gnd to Gnd
-
-Connect the potentiometer (knob) to the MB2 as follows:
-
-- Pin 1 to Gnd
-- Pin 2 to P2
-- Pin 3 to +3.3V
-
-## UI
-
-The knob controls the individual settings: frame rate and
-color levels. Which parameter the knob controls should be
-determined by which buttons are held. (Right now, the knob
-jus always controls Blue. You should see the color change
-from green to teal-blue as you turn the knob clockwise.)
-
-- No buttons held: Change the frame rate in steps of 10
-  frames per second from 10..160.
-- A button held: Change the blue level from off to on over
-  16 steps.
-- B button held: Change the green level from off to on over
-  16 steps.
-- A+B buttons held: Change the red level from off to on over
-  16 steps.
-
-The "frame rate" (also known as the "refresh rate") is the
-time to scan out all three colors. (See the scanout code.)
-At 30 frames per second, every 1/30th of a second the LED
-should scan out all three colors. If the frame rate is too
-low, the LED will appear to "blink". If it is too high, it
-will eat CPU for no reason.
-
-I think the frame rate is probably set higher than it needs
-to be right now: it can be tuned lower.
