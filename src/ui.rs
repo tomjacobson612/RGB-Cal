@@ -67,6 +67,7 @@ impl Ui {
             //Measure knob level
             let level = self.knob.measure().await;
 
+            //If no button pressed and framerate has changed, update it. 
             if self._button_a.is_high() && self._button_b.is_high(){
                 if self.state.frame_rate != (level as u64 * 10)+10{
                     self.state.frame_rate = (level as u64 * 10)+10;
@@ -74,7 +75,7 @@ impl Ui {
                 }
             }
                 
-            //If blue channel level has changed
+            //If a button pressed and blue channel level has changed, update it. 
             if self._button_a.is_low() && level != self.state.levels[2] {
 
                 //Update level
@@ -88,7 +89,8 @@ impl Ui {
                 })
                 .await;
             }
-
+            
+            //If b button pressed and green channel level has changed, update it.
             if self._button_b.is_low() && level != self.state.levels[1] {
 
                 //Update level
@@ -103,6 +105,7 @@ impl Ui {
                 .await;
             }
 
+            //If both buttons pressed and red channel level has changed, update it.
             if (self._button_a.is_low() && self._button_b.is_low()) && level != self.state.levels[0] {
 
                 //Update level
