@@ -3,7 +3,7 @@ use crate::*;
 type RgbPins = [Output<'static, AnyPin>; 3];
 
 pub struct Rgb {
-    //Array of RGB pins 
+    //Array of RGB pins
     rgb: RgbPins,
     // Shadow variables to minimize lock contention.
     levels: [u32; 3],
@@ -30,7 +30,6 @@ impl Rgb {
 
     //Perform a step for a given LED
     async fn step(&mut self, led: usize) {
-
         //Retrieve current level
         let level = self.levels[led];
 
@@ -46,7 +45,7 @@ impl Rgb {
         let level = LEVELS - level;
         if level > 0 {
             let off_time = level as u64 * self.tick_time;
-            
+
             //Wait for that amount of time
             Timer::after_micros(off_time).await;
         }

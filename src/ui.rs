@@ -34,7 +34,7 @@ pub struct Ui {
 }
 
 impl Ui {
-    //Constructor 
+    //Constructor
     pub fn new(knob: Knob, _button_a: Button, _button_b: Button) -> Self {
         Self {
             knob,
@@ -67,17 +67,16 @@ impl Ui {
             //Measure knob level
             let level = self.knob.measure().await;
 
-            //If no button pressed and framerate has changed, update it. 
-            if self._button_a.is_high() && self._button_b.is_high(){
-                if self.state.frame_rate != (level as u64 * 10)+10{
-                    self.state.frame_rate = (level as u64 * 10)+10;
+            //If no button pressed and framerate has changed, update it.
+            if self._button_a.is_high() && self._button_b.is_high() {
+                if self.state.frame_rate != (level as u64 * 10) + 10 {
+                    self.state.frame_rate = (level as u64 * 10) + 10;
                     self.state.show();
                 }
             }
-                
-            //If a button pressed and blue channel level has changed, update it. 
-            if self._button_a.is_low() && level != self.state.levels[2] {
 
+            //If a button pressed and blue channel level has changed, update it.
+            if self._button_a.is_low() && level != self.state.levels[2] {
                 //Update level
                 self.state.levels[2] = level;
 
@@ -89,10 +88,9 @@ impl Ui {
                 })
                 .await;
             }
-            
+
             //If b button pressed and green channel level has changed, update it.
             if self._button_b.is_low() && level != self.state.levels[1] {
-
                 //Update level
                 self.state.levels[1] = level;
 
@@ -106,8 +104,8 @@ impl Ui {
             }
 
             //If both buttons pressed and red channel level has changed, update it.
-            if (self._button_a.is_low() && self._button_b.is_low()) && level != self.state.levels[0] {
-
+            if (self._button_a.is_low() && self._button_b.is_low()) && level != self.state.levels[0]
+            {
                 //Update level
                 self.state.levels[0] = level;
 
